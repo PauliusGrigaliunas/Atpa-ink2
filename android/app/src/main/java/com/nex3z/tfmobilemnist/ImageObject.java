@@ -1,4 +1,4 @@
-package com.nex3z.tfmobilemnist.classes;
+package com.nex3z.tfmobilemnist;
 
 import android.graphics.Bitmap;
 import android.graphics.Paint;
@@ -10,10 +10,10 @@ public class ImageObject {
     private Bitmap image;
     private int prediction;
     private double probability;
-    private long time;
+    private String time;
 
 
-    public ImageObject(Bitmap image, int prediction, double probability, long time ){
+    public ImageObject(Bitmap image, int prediction, double probability, String time ){
         this.image = image;
         this.prediction = prediction;
         this.probability = probability;
@@ -31,7 +31,7 @@ public class ImageObject {
     public Bitmap getImage(){ return image; }
     public int getPrediction(){ return prediction; }
     public double getProbability(){ return probability; }
-    public long getTime(){
+    public String getTime(){
         return time;
     }
 

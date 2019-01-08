@@ -16,11 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nex3z.fingerpaintview.FingerPaintView;
-import com.nex3z.tfmobilemnist.classes.Classifier;
-import com.nex3z.tfmobilemnist.classes.DatabaseHelper;
-import com.nex3z.tfmobilemnist.classes.ImageObject;
-import com.nex3z.tfmobilemnist.classes.ImageUtil;
-import com.nex3z.tfmobilemnist.classes.Result;
 
 import butterknife.ButterKnife;
 
@@ -50,8 +45,8 @@ public class DrawFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         final View view = inflater.inflate(R.layout.fragment_draw, container, false);
+        mydb = new DatabaseHelper(getActivity());
         clearButton = (Button) view.findViewById(R.id.btn_clear2);
         detectButton = (Button) view.findViewById(R.id.btn_detect);
         mFpvPaint = view.findViewById(R.id.fpv_paint2);
@@ -59,6 +54,7 @@ public class DrawFragment extends Fragment {
         mTvProbability = view.findViewById(R.id.tv_probability);
         mTvTimeCost = view.findViewById(R.id.tv_timecost);
         NamBarBtnVar = new Button(getActivity());
+
 
         clearButton.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -89,6 +85,7 @@ public class DrawFragment extends Fragment {
         });
 
         changeToolBar();
+
         saveObject();
         return view;
     }
@@ -134,18 +131,20 @@ public class DrawFragment extends Fragment {
             public void onClick(View v) {
                 if (mClassifier == null) {
                     Log.e(LOG_TAG, "onDetectClick(): Classifier is not initialized");
-                    Snackbar.make(v, "Picture was't insered", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+
                     return;
                 } else if (mFpvPaint.isEmpty()) {
-                    Toast.makeText(getActivity(), R.string.please_write_a_digit, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getActivity(), R.string.please_write_a_digit, Toast.LENGTH_SHORT).show();
+                    Snackbar.make(v, "Picture was't insered", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
                     return;
                 }
                 else{
                     ImageObject image = new ImageObject(inverted,
-                            Integer.parseInt(mTvPrediction.getText().toString()) ,
+                            Integer.parseInt(mTvPrediction.getText().toString()),
                             Double.parseDouble(mTvProbability.getText().toString()),
-                            Long.parseLong(mTvTimeCost.getText().toString()));
+                            mTvTimeCost.getText().toString());
+
                     if (mydb.insertTaskData(image)) {
                         Snackbar.make(v, "Picture was saved", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();

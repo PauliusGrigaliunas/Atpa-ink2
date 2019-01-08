@@ -1,4 +1,4 @@
-package com.nex3z.tfmobilemnist.classes;
+package com.nex3z.tfmobilemnist;
 
 public class Result {
 

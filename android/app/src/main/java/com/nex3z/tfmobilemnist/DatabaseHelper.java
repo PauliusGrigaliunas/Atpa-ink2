@@ -1,4 +1,4 @@
-package com.nex3z.tfmobilemnist.classes;
+package com.nex3z.tfmobilemnist;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,12 +10,12 @@ import android.graphics.Bitmap;
 import java.io.ByteArrayOutputStream;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final String DATABASE_NAME = "Atpazink.db";
+    public static final String DATABASE_NAME = "Atpazink2.db";
     public static final String Table_Gallery = "Gallery";
     public static final String Col_ID = "ID";
     public static final String Col_time = "time";
     public static final String Col_prediction = "prediction";
-    public static final String Col_probability = "prediction";
+    public static final String Col_probability = "probability";
     public static final String Col_image = "image";
 
     protected SQLiteDatabase db = this.getWritableDatabase();
@@ -51,7 +51,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValues = new ContentValues();
         contentValues.put(Col_image, data);
         contentValues.put(Col_prediction, imageObject.getPrediction());
-        contentValues.put(Col_time, System.currentTimeMillis());
+        contentValues.put(Col_probability, imageObject.getProbability());
+        contentValues.put(Col_time, imageObject.getTime());
 
 
         long result = db.insert(Table_Gallery, null, contentValues);
