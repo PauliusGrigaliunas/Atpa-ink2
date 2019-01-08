@@ -21,7 +21,6 @@
             android:id="@+id/tv_prediction"
             style="@style/ResultText"
             android:layout_width="match_parent"
-            android:layout_height="96dp"
             android:text="@string/empty"
             android:textColor="@android:color/black"
             android:textSize="24sp"
@@ -62,8 +61,8 @@
 
     <com.nex3z.fingerpaintview.FingerPaintView
         android:id="@+id/fpv_paint2"
-        android:layout_width="259dp"
-        android:layout_height="165dp"
+        android:layout_width="336dp"
+        android:layout_height="228dp"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:foreground="@drawable/shape_rect_border" />
