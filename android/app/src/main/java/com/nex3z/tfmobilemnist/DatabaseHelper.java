@@ -74,6 +74,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int result = db.delete(Table_Gallery, Col_ID  + "=" + imageObject.getID(), null);
         return (result == 0) ? false : true;
     }
+    public boolean deleteByID(int id ) {
+        int result = db.delete(Table_Gallery, Col_ID  + "=" + id, null);
+        return (result == 0) ? false : true;
+    }
 
     public Cursor showAll(){
         Cursor cursor = db.rawQuery("SELECT * FROM " + Table_Gallery , null);

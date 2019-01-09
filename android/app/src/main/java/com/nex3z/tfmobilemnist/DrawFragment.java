@@ -1,13 +1,19 @@
 package com.nex3z.tfmobilemnist;
 
+import android.app.ActionBar;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Icon;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -34,6 +40,7 @@ public class DrawFragment extends Fragment {
     private Bitmap inverted, imageStamp;
 
     private Classifier mClassifier;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +62,6 @@ public class DrawFragment extends Fragment {
         mTvTimeCost = view.findViewById(R.id.tv_timecost);
         NamBarBtnVar = new Button(getActivity());
 
-
         clearButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -76,11 +82,7 @@ public class DrawFragment extends Fragment {
                     Toast.makeText(getActivity(), R.string.please_write_a_digit, Toast.LENGTH_SHORT).show();
                     return;
                 }
-            imageStamp = mFpvPaint.exportToBitmap(
-                    Classifier.DIM_IMG_SIZE_WIDTH, Classifier.DIM_IMG_SIZE_HEIGHT);
-            inverted = ImageUtil.invert(imageStamp);
-            Result result = mClassifier.classify(inverted);
-            renderResult(result);
+                detect();
             }
         });
 
@@ -89,6 +91,16 @@ public class DrawFragment extends Fragment {
         saveObject();
         return view;
     }
+
+    private void detect(){
+        imageStamp = mFpvPaint.exportToBitmap(
+                Classifier.DIM_IMG_SIZE_WIDTH, Classifier.DIM_IMG_SIZE_HEIGHT);
+        inverted = ImageUtil.invert(imageStamp);
+        Result result = mClassifier.classify(inverted);
+        renderResult(result);
+    }
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -116,9 +128,7 @@ public class DrawFragment extends Fragment {
     private void changeToolBar(){
 
         toolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-
-        toolbar.setSubtitle("Task info");
-        NamBarBtnVar.setText("save");
+        NamBarBtnVar.setText("Save");
         Toolbar.LayoutParams layoutParams = new Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT);
         layoutParams.gravity=Gravity.END;
         toolbar.addView(NamBarBtnVar, layoutParams);
@@ -133,13 +143,15 @@ public class DrawFragment extends Fragment {
                     Log.e(LOG_TAG, "onDetectClick(): Classifier is not initialized");
 
                     return;
-                } else if (mFpvPaint.isEmpty()) {
+                }else if (mFpvPaint.isEmpty()) {
                     //Toast.makeText(getActivity(), R.string.please_write_a_digit, Toast.LENGTH_SHORT).show();
-                    Snackbar.make(v, "Picture was't insered", Snackbar.LENGTH_LONG)
+                    Snackbar.make(v, "Picture wasn't insered", Snackbar.LENGTH_LONG)
                             .setAction("Action", null).show();
                     return;
+                }else if (mTvPrediction.getText().toString().equals("--")) {
+                    detect();
                 }
-                else{
+
                     ImageObject image = new ImageObject(imageStamp,
                             Integer.parseInt(mTvPrediction.getText().toString()),
                             Double.parseDouble(mTvProbability.getText().toString()),
@@ -151,7 +163,7 @@ public class DrawFragment extends Fragment {
                     } else
                         Snackbar.make(v, "Picture was't saved", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
-                }
+
 
             }
         });

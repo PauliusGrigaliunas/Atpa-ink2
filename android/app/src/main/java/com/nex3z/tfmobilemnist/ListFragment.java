@@ -2,6 +2,10 @@ package com.nex3z.tfmobilemnist;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +21,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,7 +33,7 @@ public class ListFragment extends Fragment {
     private FloatingActionButton fab;
 
     private ArrayList arrayList;
-    private HashMap<String, String> hmap;
+    private HashMap<String, Object> hmap;
 
     private TextView textView;
 
@@ -51,6 +56,9 @@ public class ListFragment extends Fragment {
         listView = (ListView) view.findViewById(R.id.listView);
         mydb = new DatabaseHelper(getActivity());
         showList();
+
+
+
         return view;
     }
 
@@ -69,17 +77,17 @@ public class ListFragment extends Fragment {
 
 
             while (c.moveToNext()) {
-                hmap = new HashMap<String, String>();
+                hmap = new HashMap<String, Object>();
                 hmap.put("id", c.getString(0));
                 hmap.put("prediction", " prediction: " + c.getString(2));
                 hmap.put("probability", " prob: " + c.getString(3));
                 hmap.put("image", Integer.toString(flags));
-               /* byte[] byteArray = c.getBlob(3);
-                Drawable did = new BitmapDrawable(getResources(),BitmapFactory.decodeByteArray(byteArray, 0 ,byteArray.length).toString());
-                hmap.put("points", did.toString());*/
+                //byte[] byteArray = c.getBlob(1);
+                //hmap.put("image", BitmapFactory.decodeByteArray(byteArray,0 , byteArray.length));
 
 
                 arrayList.add(hmap);
+
 
                 //imageView.setImageBitmap(bitmap);
             }
