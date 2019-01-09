@@ -31,7 +31,7 @@ public class DrawFragment extends Fragment {
     private DatabaseHelper mydb;
     private Button NamBarBtnVar;
     private Toolbar toolbar;
-    private Bitmap inverted;
+    private Bitmap inverted, imageStamp;
 
     private Classifier mClassifier;
     @Override
@@ -76,9 +76,9 @@ public class DrawFragment extends Fragment {
                     Toast.makeText(getActivity(), R.string.please_write_a_digit, Toast.LENGTH_SHORT).show();
                     return;
                 }
-            Bitmap image = mFpvPaint.exportToBitmap(
+            imageStamp = mFpvPaint.exportToBitmap(
                     Classifier.DIM_IMG_SIZE_WIDTH, Classifier.DIM_IMG_SIZE_HEIGHT);
-            inverted = ImageUtil.invert(image);
+            inverted = ImageUtil.invert(imageStamp);
             Result result = mClassifier.classify(inverted);
             renderResult(result);
             }
@@ -140,7 +140,7 @@ public class DrawFragment extends Fragment {
                     return;
                 }
                 else{
-                    ImageObject image = new ImageObject(inverted,
+                    ImageObject image = new ImageObject(imageStamp,
                             Integer.parseInt(mTvPrediction.getText().toString()),
                             Double.parseDouble(mTvProbability.getText().toString()),
                             mTvTimeCost.getText().toString());
